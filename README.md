@@ -106,3 +106,26 @@ python src/train.py
 
 Модель навчається на **`data/processed/churn_v1.csv`**; версія даних записується в `reports/baseline_metrics.json` (`"data_version": "v1"`).
 Метрики не змінились порівняно з ЛР1, бо підготовка даних дає ті самі значення, але тепер вони відтворювані й прив'язані до версії даних.
+
+## Лабораторна робота №3: MLflow (experiment tracking і Model Registry)
+
+Залежність: `mlflow` (див. `requirements.txt`). Перевірка: `mlflow --version`.
+
+Запуск експериментів (з кореня проєкту):
+```bash
+python src/train.py --model-type logistic_regression
+python src/train.py --model-type random_forest
+```
+Кожен запуск логує в MLflow параметри (`model_type`, `data_version`, `test_size`, `random_state`, гіперпараметри),
+метрики (accuracy, precision, recall, f1, roc_auc), артефакт `reports/latest_metrics.json` та саму модель.
+
+Перегляд результатів:
+```bash
+mlflow ui --host 127.0.0.1 --port 5000
+```
+Відкрити http://127.0.0.1:5000. MLflow UI потрібно запускати з **кореня проєкту** (там, де навчання), інакше він не знайде runs.
+
+- Experiment: `customer-churn-baseline` (список runs, порівняння через Compare).
+- Runs і артефакти зберігаються локально в `mlruns/` (у git не комітиться).
+- Model Registry: вкладка **Models** в UI, модель `CustomerChurnClassifier`; кожен запуск створює нову версію.
+- Вибір найкращої моделі описано в `reports/model_selection.md`.

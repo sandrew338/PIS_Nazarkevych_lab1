@@ -4,3 +4,5 @@ __pycache__/
 models/*.joblib
 .env
 .DS_Store
+mlruns/
+mlflow.db
