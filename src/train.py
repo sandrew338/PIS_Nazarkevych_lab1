@@ -82,6 +82,10 @@ def main(model_type="logistic_regression", n_estimators=100, max_iter=2000):
         Path("reports").mkdir(exist_ok=True)
         joblib.dump(model, "models/latest_model.joblib")
 
+        # Список колонок потрібен inference-сервісу, щоб зібрати ті самі ознаки, що й при навчанні
+        with open("models/feature_columns.json", "w", encoding="utf-8") as f:
+            json.dump(list(X.columns), f, ensure_ascii=False, indent=2)
+
         report_path = "reports/latest_metrics.json"
         with open(report_path, "w", encoding="utf-8") as f:
             json.dump(
